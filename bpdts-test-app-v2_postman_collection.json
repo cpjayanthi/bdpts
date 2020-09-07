@@ -1,0 +1,380 @@
+{
+	"info": {
+		"_postman_id": "ec8b0f4d-4baa-4050-9c03-6194358f622c",
+		"name": "bpdts-test-app-v2-test-env",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://bpdts-test-app-v2.herokuapp.com/users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b2c8302c-6427-41cb-8e43-cbb92a6f6dfc",
+						"exec": [
+							"//defining standardised constants used in script\r",
+							"const apiName = \" GET /users - \";\r",
+							"const apiExecStatus = pm.environment.get(\"apiExecStatus\");\r",
+							"const apiResponseStatus = pm.environment.get(\"apiResponseStatus\");\r",
+							"const apiResponseStructure = pm.environment.get(\"apiResponseStructure\");\r",
+							"const apiResponseData = pm.environment.get(\"apiResponseData\");\r",
+							"const apiResponseRecord = pm.environment.get(\"apiResponseRecord\");\r",
+							"\r",
+							"//check if execution is successful (status 200)\r",
+							"pm.test(apiName+apiExecStatus, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//check if overall JSON Response is proper\r",
+							"pm.test(apiName+apiResponseStatus, () => { \r",
+							"\tconst jsonData = pm.response.json();\r",
+							"\r",
+							"    //check if JSON record/data structure is OK\r",
+							"\tpm.test(apiName+apiResponseStructure, () => { \r",
+							"\t\tpm.response.to.be.ok;\r",
+							"\t\tpm.response.to.be.withBody;\r",
+							"\t\tpm.response.to.be.json;\r",
+							"\t\tpm.response.to.not.have.jsonBody(\"error\"); \r",
+							"\t\t\r",
+							"\t\t//Validating if the necessary fields are present\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"id\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"first_name\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"last_name\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"email\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"ip_address\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"latitude\");\r",
+							"\t\tpm.expect(pm.response.text()).to.include(\"longitude\");\r",
+							"\r",
+							"\t\t//verifying json data is an array\r",
+							"\t\tpm.expect(jsonData).to.be.an(\"array\");\r",
+							"\t});\r",
+							"\r",
+							"    //check if JSON Record has proper data\r",
+							"\tpm.test(apiName+apiResponseData, () => {\r",
+							"\t\tconst userObjArray = JSON.parse( JSON.stringify(jsonData) );\r",
+							"\t\t\r",
+							"\t\tuserObjArray.forEach(function(currentUser) {\r",
+							"\t\t\tpm.test(apiResponseRecord+\" - \"+ currentUser.id , () => {\r",
+							"\t\t\t\tpm.expect(currentUser.id).to.match(/^\\d*$/);\r",
+							"\t\t\t\tpm.expect(currentUser.first_name).to.be.a(\"string\");\r",
+							"\t\t\t\tpm.expect(currentUser.last_name).to.be.a(\"string\");\r",
+							"\r",
+							"\t\t\t\tpm.expect(currentUser.email).to.match(/^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$/);\r",
+							"\t\t\t\tpm.expect(currentUser.ip_address).to.match(/([0-9]{1,3}\\.?){4}/);\r",
+							"\t\t\t\tpm.expect(currentUser.latitude).to.match(/^-?\\d*\\.{1}\\d*$/);\r",
+							"\t\t\t\tpm.expect(currentUser.longitude).to.match(/^-?\\d*\\.{1}\\d*$/);  \r",
+							"\t\t\t});\r",
+							"\t\t});\r",
+							"\t});\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "6105da86-2755-4a25-a465-0f43f8433072",
+						"exec": [
+							"pm.globals.set(\"apiName\", \"GET USERS\");"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bpdts-test-app-v2.herokuapp.com/users",
+					"protocol": "http",
+					"host": [
+						"bpdts-test-app-v2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://bpdts-test-app-v2.herokuapp.com/instructions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bd6fea77-f468-4313-b005-15d0809a8e29",
+						"exec": [
+							"//defining standardised constants used in script\r",
+							"const apiName = \" GET /instructions - \";\r",
+							"const apiExecStatus = pm.environment.get(\"apiExecStatus\");\r",
+							"const apiResponseStatus = pm.environment.get(\"apiResponseStatus\");\r",
+							"\r",
+							"//check if execution is successful (status 200)\r",
+							"pm.test(apiName+apiExecStatus, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"//check if overall JSON Response is proper\r",
+							"pm.test(apiName+apiResponseStatus, function () { \r",
+							"    pm.response.to.not.have.jsonBody(\"error\"); \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bpdts-test-app-v2.herokuapp.com/instructions",
+					"protocol": "http",
+					"host": [
+						"bpdts-test-app-v2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"instructions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://bpdts-test-app-v2.herokuapp.com/{{city}}/users",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "1ac7e2ee-78cc-46b6-8830-239b24c5aa4d",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "6a5f3df9-21d0-4045-b033-4bb579ec1af6",
+						"exec": [
+							"//defining standardised constants used in script\r",
+							"const  city=pm.variables.get(\"city\");\r",
+							"const apiName = \" GET /city/\" + city +\"/users - \";\r",
+							"\r",
+							"const apiExecStatus = pm.environment.get(\"apiExecStatus\");\r",
+							"const apiResponseStatus = pm.environment.get(\"apiResponseStatus\");\r",
+							"const apiResponseStructure = pm.environment.get(\"apiResponseStructure\");\r",
+							"const apiResponseRecord = pm.environment.get(\"apiResponseRecord\");\r",
+							"\r",
+							"//check if execution is successful (status 200)\r",
+							"pm.test(apiName+apiExecStatus, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"//check if overall JSON Response is proper\r",
+							"pm.test(apiName+apiResponseStatus, () => { \r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"    pm.response.to.not.have.jsonBody(\"error\"); \r",
+							"    \r",
+							"    var testStatus=false;\r",
+							"\r",
+							"    //check if JSON record/data structure is OK\r",
+							"    pm.test(apiName+apiResponseStructure, () => {\r",
+							"\r",
+							"        //Validating if the necessary fields are present\r",
+							"        pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"first_name\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"last_name\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"ip_address\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"latitude\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"longitude\");\r",
+							"\r",
+							"        //verifying json data is an array\r",
+							"        pm.expect(jsonData).to.be.an(\"array\");\r",
+							"    });\r",
+							"\r",
+							"    //check if JSON Record has proper data\r",
+							"    pm.test(apiName+apiResponseRecord, () => {\r",
+							"        const userObjArray = JSON.parse( JSON.stringify(jsonData) );\r",
+							"        \r",
+							"        pm.expect(userObjArray[0].id).to.match(/^\\d*$/);\r",
+							"        pm.expect(userObjArray[0].first_name).to.be.a(\"string\");\r",
+							"        pm.expect(userObjArray[0].last_name).to.be.a(\"string\");\r",
+							"        pm.expect(userObjArray[0].email).to.match(/^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$/);\r",
+							"        pm.expect(userObjArray[0].ip_address).to.match(/([0-9]{1,3}\\.?){4}/);\r",
+							"        pm.expect(userObjArray[0].latitude).to.match(/^-?\\d*\\.{1}\\d*$/);\r",
+							"        pm.expect(userObjArray[0].longitude).to.match(/^-?\\d*\\.{1}\\d*$/);\r",
+							"\r",
+							"        testStatus=true;\r",
+							"    });\r",
+							"\r",
+							"    if (!testStatus){\r",
+							"        pm.expect.fail();\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bpdts-test-app-v2.herokuapp.com/city/{{city}}/users",
+					"protocol": "http",
+					"host": [
+						"bpdts-test-app-v2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"city",
+						"{{city}}",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://bpdts-test-app-v2.herokuapp.com/users/{{id}}",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d05b8895-2494-4459-8cd6-97e12de785a5",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "86d4544a-7b68-41b1-b6ae-3a73c0675f2b",
+						"exec": [
+							"//defining standardised constants used in script\r",
+							"const  id=pm.variables.get(\"id\");\r",
+							"const apiName = \" GET /user/\" + id +\" - \";\r",
+							"\r",
+							"const apiExecStatus = pm.environment.get(\"apiExecStatus\");\r",
+							"const apiResponseStatus = pm.environment.get(\"apiResponseStatus\");\r",
+							"const apiResponseStructure = pm.environment.get(\"apiResponseStructure\");\r",
+							"const apiResponseRecord = pm.environment.get(\"apiResponseRecord\");\r",
+							"\r",
+							"//check if execution is successful (status 200)\r",
+							"pm.test(apiName+apiExecStatus, function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"//check if overall JSON Response is proper\r",
+							"pm.test(apiName+apiResponseStatus, function () { \r",
+							"    pm.response.to.be.ok;\r",
+							"    pm.response.to.be.withBody;\r",
+							"    pm.response.to.be.json;\r",
+							"\r",
+							"    pm.response.to.not.have.jsonBody(\"error\"); \r",
+							"\r",
+							"    var testStatus=false;\r",
+							"    //check if JSON record/data structure is OK\r",
+							"    pm.test(apiName+apiResponseStructure, () => {\r",
+							"\r",
+							"        //Validating if the necessary fields are present\r",
+							"        pm.expect(pm.response.text()).to.include(\"id\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"first_name\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"last_name\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"email\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"ip_address\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"latitude\");\r",
+							"        pm.expect(pm.response.text()).to.include(\"longitude\");\r",
+							"    });\r",
+							"    \r",
+							"    //check if JSON Record has proper data\r",
+							"    pm.test(apiName+apiResponseRecord, () => {\r",
+							"        const userObj = JSON.parse( pm.response.text() );\r",
+							"        \r",
+							"        pm.expect(userObj.id).to.match(/^\\d*$/);\r",
+							"        pm.expect(userObj.first_name).to.be.a(\"string\");\r",
+							"        pm.expect(userObj.last_name).to.be.a(\"string\");\r",
+							"        pm.expect(userObj.email).to.match(/^([a-zA-Z0-9_\\-\\.]+)@([a-zA-Z0-9_\\-\\.]+)\\.([a-zA-Z]{2,5})$/);\r",
+							"        pm.expect(userObj.ip_address).to.match(/([0-9]{1,3}\\.?){4}/);\r",
+							"        pm.expect(userObj.latitude).to.match(/^-?\\d*\\.{1}\\d*$/);\r",
+							"        pm.expect(userObj.longitude).to.match(/^-?\\d*\\.{1}\\d*$/);\r",
+							"\r",
+							"        testStatus=true;\r",
+							"    });\r",
+							"    \r",
+							"    if (!testStatus){\r",
+							"        pm.expect.fail();\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://bpdts-test-app-v2.herokuapp.com/user/{{id}}",
+					"protocol": "http",
+					"host": [
+						"bpdts-test-app-v2",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"user",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "ff4111b0-9b12-4eea-8663-0aa0e09f424f",
+				"type": "text/javascript",
+				"exec": [
+					"pm.environment.set(\"apiExecStatus\", \"Executed successfully\");",
+					"pm.environment.set(\"apiResponseStatus\", \"Response is OK\");",
+					"pm.environment.set(\"apiResponseStructure\", \"Response JSON structure is OK\");",
+					"pm.environment.set(\"apiResponseData\", \"Response JSON data is OK\");",
+					"pm.environment.set(\"apiResponseRecord\", \"Response JSON record is OK\");"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "0d76aef4-822c-477b-b1fb-683c0437c839",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

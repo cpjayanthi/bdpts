@@ -1,0 +1,22 @@
+[
+  {
+    "id" : "1",
+    "city": "Standerton"
+  },
+  {
+    "id" : "2",
+    "city": "Standerton"
+  },
+  {
+    "id" : "3",
+    "city": "Standerton"
+  },
+  {
+    "id" : "4",
+    "city": "WrongValue"
+  },
+  {
+    "id" : "1500",
+    "city": "Standerton"
+  }
+]
